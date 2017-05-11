@@ -1,0 +1,1 @@
+heroku war:deploy ServerProject-0.0.1-SNAPSHOT.war --app back-end-school-project
