@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 
 @SpringBootApplication
-@ComponentScan(basePackages={"com.application.restController","com.application.service"})
+@ComponentScan(basePackages={"com.application.restController","com.application.service","com.application.test"})
 @EntityScan(basePackages={"com.application.model"})
 @EnableJpaRepositories(basePackages={"com.application.model.repository"})
 public class BackEndServerApplication extends SpringBootServletInitializer{

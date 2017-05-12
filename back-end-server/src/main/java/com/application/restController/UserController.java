@@ -22,8 +22,6 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private UserRepository userRepo;
 	
 	@RequestMapping(value="/")
 	public String getMessage(){
@@ -32,8 +30,6 @@ public class UserController {
 	
 	@RequestMapping(value="/get-all-users",method=RequestMethod.GET)
 	public List<User> onGetUserList(){
-		userRepo.save(new User("rzvs95@gmail.com","password1"));
-		userRepo.save(new User("ambro95@gmail.com","password2"));
 		return userService.getAllUserRecords();
 	}
 }

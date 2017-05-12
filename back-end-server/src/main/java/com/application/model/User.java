@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -23,8 +24,8 @@ public class User {
 	private long id;
 
 	@NotNull
-	@Column(name = "email")
-	private String user;
+	@Column(name = "email", unique = true)
+	private String userEmail;
 
 	@NotNull
 	@Column(name = "password")
@@ -34,9 +35,9 @@ public class User {
 		super();
 	}
 
-	public User(String user, String password) {
-
-		this.user = user;
+	public User(String userEmail, String password) {
+		super();
+		this.userEmail = userEmail;
 		this.password = password;
 	}
 
@@ -48,20 +49,20 @@ public class User {
 		this.id = id;
 	}
 
-	public String getUser() {
-		return user;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
-	}
-
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 
 }
