@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -25,16 +28,21 @@ public class TokenAuthenticationService {
 	static final String SECRET="ThisIsASecret";
 	static final String TOKEN_PREFIX="Bearer";
 	static final String HEADER_NAME="Authorization";
+	static final String USER_DETAILS="User-Details";
 	
-	static void addAuthentication(HttpServletResponse res,String username){
+	static void addAuthentication(HttpServletResponse res,Authentication user) throws JsonProcessingException{
 		//setting TOKEn 
 		String JWT = Jwts.builder()
-				.setSubject(username)
+				.setSubject(user.getName())
 				.setExpiration(new Date(System.currentTimeMillis()+EXPIRATIONTIME))
 				.signWith(SignatureAlgorithm.HS512, SECRET)
 				.compact();
 		//Add token to header response
 		res.addHeader(HEADER_NAME, TOKEN_PREFIX+" "+JWT);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		 //as name of USER-DETAILS what am I mapping on front-end i get string map of user details
+		res.addHeader(USER_DETAILS, mapper.writeValueAsString(user.getDetails()));
 	}
 	
 	/**
