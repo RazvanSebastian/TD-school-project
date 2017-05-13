@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.application.model.Spectacle;
 
-
+@Transactional
 public interface SpectacleRepository extends JpaRepository<Spectacle, Long> {
 
 	// For auto populate

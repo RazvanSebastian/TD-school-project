@@ -49,7 +49,7 @@ public class SpectacleSchedule implements Serializable{
 	@Column(name = "price")
 	private int price;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="spectacle")
 	private Spectacle spectacle ;
 	

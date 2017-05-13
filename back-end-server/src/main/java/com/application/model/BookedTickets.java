@@ -13,15 +13,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
 @Entity
-@Table(name="booked_tickets")
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class BookedTickets implements Serializable{
-	
+@Table(name = "booked_tickets")
+public class BookedTickets implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -30,23 +27,19 @@ public class BookedTickets implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idTransaction;
-	
+
 	@NotNull
-	@Column(name="seat_number")
+	@Column(name = "seat_number")
 	private int seatNumber;
 
 	@ManyToOne
-	@JoinColumn(name="user")
-	@JsonIgnore
+	@JoinColumn(name = "user")
 	private User user;
-	
+
 	@ManyToOne
-	@JoinColumn(name="spectacleScheduler")
-	@JsonIgnore
+	@JoinColumn(name = "spectacleScheduler")
 	private SpectacleSchedule spectacleScheduler;
-	
-	
-	
+
 	public BookedTickets() {
 		super();
 	}
@@ -57,8 +50,6 @@ public class BookedTickets implements Serializable{
 		this.user = user;
 		this.spectacleScheduler = spectacleScheduler;
 	}
-
-
 
 	public Long getIdTransaction() {
 		return idTransaction;
@@ -91,7 +82,5 @@ public class BookedTickets implements Serializable{
 	public void setSpectacleScheduler(SpectacleSchedule spectacleScheduler) {
 		this.spectacleScheduler = spectacleScheduler;
 	}
-	
-	
-	
+
 }

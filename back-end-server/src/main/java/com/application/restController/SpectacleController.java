@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.application.model.BookedTickets;
 import com.application.model.Spectacle;
 import com.application.model.SpectacleSchedule;
 import com.application.model.repository.BookedTicketRepository;
@@ -57,5 +58,12 @@ public class SpectacleController {
 			// TODO Auto-generated catch block
 			return new ResponseEntity<String>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
 		}
+	}
+	
+	@Autowired
+	private BookedTicketRepository repo;
+	@RequestMapping(value="/api/test-tickets")
+	public List<BookedTickets> sendAll(){
+		return repo.findAll();
 	}
 }
