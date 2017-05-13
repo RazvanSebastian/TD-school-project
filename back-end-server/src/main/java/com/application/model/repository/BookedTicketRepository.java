@@ -13,7 +13,7 @@ import com.application.model.Spectacle;
 @Transactional
 public interface BookedTicketRepository extends JpaRepository<BookedTickets, Long> {
 
-	@Query("select s.spectacle from BookedTickets b inner join b.spectacleScheduler s where b.user.id= :id")
+	@Query("select s.spectacle from BookedTickets b inner join b.spectacleScheduler s where b.userField.id= :id")
 	List<Spectacle> findAllUserSpectaclesByUserId(@Param("id") Long id);
 	
 	@Query("SELECT b from BookedTickets b WHERE b.seatNumber=:seatNumber AND b.spectacleScheduler.idSpectacleSchedule=:idSchedule")

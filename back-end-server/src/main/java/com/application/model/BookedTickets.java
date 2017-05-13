@@ -13,8 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 @Entity
 @Table(name = "booked_tickets")
 public class BookedTickets implements Serializable {
@@ -33,8 +31,8 @@ public class BookedTickets implements Serializable {
 	private int seatNumber;
 
 	@ManyToOne
-	@JoinColumn(name = "user")
-	private User user;
+	@JoinColumn(name = "userField")
+	private User userField;
 
 	@ManyToOne
 	@JoinColumn(name = "spectacleScheduler")
@@ -44,10 +42,10 @@ public class BookedTickets implements Serializable {
 		super();
 	}
 
-	public BookedTickets(int seatNumber, User user, SpectacleSchedule spectacleScheduler) {
+	public BookedTickets(int seatNumber, User userField, SpectacleSchedule spectacleScheduler) {
 		super();
 		this.seatNumber = seatNumber;
-		this.user = user;
+		this.userField = userField;
 		this.spectacleScheduler = spectacleScheduler;
 	}
 
@@ -67,13 +65,7 @@ public class BookedTickets implements Serializable {
 		this.seatNumber = seatNumber;
 	}
 
-	public User getUser() {
-		return user;
-	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
 
 	public SpectacleSchedule getSpectacleScheduler() {
 		return spectacleScheduler;
@@ -81,6 +73,14 @@ public class BookedTickets implements Serializable {
 
 	public void setSpectacleScheduler(SpectacleSchedule spectacleScheduler) {
 		this.spectacleScheduler = spectacleScheduler;
+	}
+
+	public User getUserField() {
+		return userField;
+	}
+
+	public void setUserField(User userField) {
+		this.userField = userField;
 	}
 
 }

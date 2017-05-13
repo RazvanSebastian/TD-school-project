@@ -49,7 +49,7 @@ public class User implements UserDetails {
 	private String password;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="user",fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="userField",fetch = FetchType.LAZY,cascade=CascadeType.ALL)
 	private Set<BookedTickets> userTickets;
 
 	public User() {
