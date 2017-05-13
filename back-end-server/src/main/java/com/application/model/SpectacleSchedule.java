@@ -1,8 +1,10 @@
 package com.application.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,11 +15,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "spectacle_schedule")
-public class SpectacleSchedule {
+public class SpectacleSchedule implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,11 +49,12 @@ public class SpectacleSchedule {
 	@Column(name = "price")
 	private int price;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="spectacle")
 	private Spectacle spectacle ;
 	
-	@OneToMany(mappedBy="spectacleScheduler",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="spectacleScheduler", fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+	@JsonIgnore
 	private Set<BookedTickets> spectacleTickets;
 
 	
@@ -49,6 +64,16 @@ public class SpectacleSchedule {
 		this.seatsNumber = seatsNumber;
 		this.price = price;
 	}
+
+	public SpectacleSchedule(Date spectacleDate, int seatsNumber, int price, Spectacle spectacle) {
+		super();
+		this.spectacleDate = spectacleDate;
+		this.seatsNumber = seatsNumber;
+		this.price = price;
+		this.spectacle = spectacle;
+	}
+
+
 
 	public SpectacleSchedule() {
 		super();

@@ -39,7 +39,7 @@ public class TokenAuthenticationService {
 				.compact();
 		//Add token to header response
 		res.addHeader(HEADER_NAME, TOKEN_PREFIX+" "+JWT);
-		
+		System.out.println(JWT);
 		ObjectMapper mapper = new ObjectMapper();
 		 //as name of USER-DETAILS what am I mapping on front-end i get string map of user details
 		res.addHeader(USER_DETAILS, mapper.writeValueAsString(user.getDetails()));

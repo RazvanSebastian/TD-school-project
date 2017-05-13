@@ -3,6 +3,7 @@ package com.application.model;
 import java.util.Collection;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -48,7 +49,7 @@ public class User implements UserDetails {
 	private String password;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="user",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="user",fetch = FetchType.LAZY,cascade=CascadeType.ALL)
 	private Set<BookedTickets> userTickets;
 
 	public User() {

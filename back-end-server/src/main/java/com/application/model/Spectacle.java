@@ -11,10 +11,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "spectacle")
+
 public class Spectacle {
 
 	@Id
@@ -29,8 +35,9 @@ public class Spectacle {
 	@Column(name = "spectacle_description")
 	private String description;
 
-	 @OneToMany(fetch = FetchType.LAZY, mappedBy = "spectacle")
-	 private Set<SpectacleSchedule> spectacleSchedule;
+	@OneToMany(mappedBy = "spectacle",fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+	@JsonIgnore
+	private Set<SpectacleSchedule> spectacleSchedule;
 
 	public Spectacle() {
 		super();
@@ -64,6 +71,14 @@ public class Spectacle {
 
 	public void setIdSpectacle(Long idSpectacle) {
 		this.idSpectacle = idSpectacle;
+	}
+
+	public Set<SpectacleSchedule> getSpectacleSchedule() {
+		return spectacleSchedule;
+	}
+
+	public void setSpectacleSchedule(Set<SpectacleSchedule> spectacleSchedule) {
+		this.spectacleSchedule = spectacleSchedule;
 	}
 
 }

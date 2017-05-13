@@ -7,6 +7,12 @@ import org.springframework.security.core.GrantedAuthority;
 
 import com.application.model.User;
 
+/**
+ * 
+ * @author Parautiu
+ *
+ */
+
 public class UserAuthentication implements Authentication{
 
 	/**
