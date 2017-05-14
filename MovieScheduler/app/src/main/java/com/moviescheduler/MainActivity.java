@@ -1,9 +1,9 @@
 package com.moviescheduler;
 
-import android.content.Context;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.*;
-import android.widget.Toast;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,8 +30,12 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                startLoginActivity();
+
+
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                        */
             }
         });
 
@@ -45,6 +49,11 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    public void startLoginActivity(){
+        Intent intent = new Intent(this, LoginActivity.class);
+
+        startActivity(intent);
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -94,6 +103,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_second_layout) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new SecondFragment()).commit();
         } else if (id == R.id.nav_third_layout) {
+            //TODO: Logout - delete Token
+            Token.deleteToken(this);
             fragmentManager.beginTransaction().replace(R.id.content_frame,new ThirdFragment()).commit();
         } else if (id == R.id.nav_share) {
 
