@@ -1,25 +1,24 @@
 package com.moviescheduler;
 
-import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import pojo.ModelTest;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import pojo.UserDetails;
 
 
 /**
@@ -28,60 +27,81 @@ import pojo.ModelTest;
 
 public class FirstFragment extends Fragment {
 
+    private static final String TOKEN_NAME="Authorization";
+    private static final String USER_DETAILS="User-Details";
+
     View myView;
-    Button buttonTest;
+    Button buttonLogin;
+    EditText emailText;
+    EditText passwordText;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.first_layout, container, false);
-        //initialize the button
-        this.buttonTest = (Button) myView.findViewById(R.id.buttonGetTest);
+        //initialize elements
+        this.buttonLogin = (Button) myView.findViewById(R.id.buttonLogin);
+        this.emailText = (EditText) myView.findViewById(R.id.editTextEmail);
+        this.passwordText = (EditText) myView.findViewById(R.id.editTextPassword);
         //call the method
-        this.onClickGetTest();
+        this.onClickLogin();
         return myView;
     }
 
-    private void onClickGetTest() {
-        this.buttonTest.setOnClickListener(new View.OnClickListener() {
+    private void onClickLogin() {
+        this.buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 try {
-                    sendGet();
+                    sendLoginPost();
+                } catch (Exception e) {
                 }
-                catch(Exception e){}
 
             }
         });
     }
 
-    // HTTP GET request
-    private void sendGet() throws Exception {
-        final TextView textView = (TextView) getActivity().findViewById(R.id.textView2);
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        String url = "https://java-spring-boot.herokuapp.com/get";
+    // HTTP LOGIN POST request
+    private void sendLoginPost() throws Exception {
 
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
-                ModelTest model=gson.fromJson(response,ModelTest.class);
-                textView.setText("Response as JSON :" + response +'\n'
-                        +"Response parsed from JSON : "+model.getId()+" "+model.getName());
+        if (emailText.getText().length()!=0&& emailText.getText().length()!=0) {
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                textView.setText("Did no work!");
-            }
+            String url = "https://back-end-school-project.herokuapp.com/login";
+
+            AsyncHttpClient client = new AsyncHttpClient();
+
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("userEmail", emailText.getText());
+            jsonParams.put("password", passwordText.getText());
+
+            StringEntity entity = new StringEntity(jsonParams.toString());
+
+            client.post(myView.getContext(), url, entity, "application/json", new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    String authToken=null;
+                    UserDetails userDetails=null;
+                    for (Header h : headers) {
+                        if(h.getName().equals(TOKEN_NAME))
+                            authToken=h.getValue();
+                        if(h.getName().equals(USER_DETAILS))
+                            userDetails=new Gson().fromJson(h.getValue(), UserDetails.class);
+                    }
+                    Toast.makeText(myView.getContext(), authToken+" "+userDetails.toString(), Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    Toast.makeText(myView.getContext(), "Bad credentials!", Toast.LENGTH_LONG).show();
+                }
+            });
         }
-        );
-        queue.add(stringRequest);
+        else
+            Toast.makeText(myView.getContext(),"Empty inputs!", Toast.LENGTH_LONG).show();
 
     }
+
 }
 
 

@@ -35,5 +35,7 @@ dependencies {
     //Using to create requests to back-end server
     compile 'com.android.volley:volley:1.0.0'
 
+    compile 'com.loopj.android:android-async-http:1.4.9'
+
     testCompile 'junit:junit:4.12'
 }
