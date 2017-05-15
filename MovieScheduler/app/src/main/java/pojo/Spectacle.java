@@ -38,6 +38,7 @@ public class Spectacle {
 
     @Override
     public String toString() {
-        return "Spectacle "+name+" "+description;
+        return name.toUpperCase()+'\n'
+                +"Scurta prezentare:"+'\n'+description;
     }
 }

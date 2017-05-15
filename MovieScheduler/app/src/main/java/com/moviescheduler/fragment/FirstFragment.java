@@ -1,5 +1,6 @@
-package com.moviescheduler;
+package com.moviescheduler.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,15 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.moviescheduler.R;
+import com.moviescheduler.service.Token;
+import com.moviescheduler.activity.MainActivity;
 
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
-import pojo.UserDetails;
 
 
 /**
@@ -30,11 +32,12 @@ public class FirstFragment extends Fragment {
     private static final String TOKEN_NAME="Authorization";
     private static final String USER_DETAILS="User-Details";
 
+    private Token tokenHandler=new Token();
+
     View myView;
     Button buttonLogin;
     EditText emailText;
     EditText passwordText;
-
 
     @Nullable
     @Override
@@ -80,20 +83,39 @@ public class FirstFragment extends Fragment {
             client.post(myView.getContext(), url, entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
                     String authToken=null;
-                    UserDetails userDetails=null;
+                    String userDetailsJson=null;
+
                     for (Header h : headers) {
                         if(h.getName().equals(TOKEN_NAME))
                             authToken=h.getValue();
                         if(h.getName().equals(USER_DETAILS))
-                            userDetails=new Gson().fromJson(h.getValue(), UserDetails.class);
+                            userDetailsJson=h.getValue();
                     }
-                    Toast.makeText(myView.getContext(), authToken+" "+userDetails.toString(), Toast.LENGTH_LONG).show();
+                    if(authToken!=null && userDetailsJson!=null){
+                        tokenHandler.saveToken(authToken,myView.getContext());
+                        tokenHandler.saveDetails(userDetailsJson,myView.getContext());
+
+                        Toast.makeText(myView.getContext(), "Login success!", Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(getActivity(),MainActivity.class);
+                        startActivity(intent);
+                    }
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(myView.getContext(), "Bad credentials!", Toast.LENGTH_LONG).show();
+                    switch (statusCode) {
+                        case 500:
+                            Toast.makeText(myView.getContext(), "No internet connection!", Toast.LENGTH_LONG).show();
+                            break;
+                        case 403:
+                            Toast.makeText(myView.getContext(), "Access denied!", Toast.LENGTH_LONG).show();
+                            break;
+                        default:
+                            Toast.makeText(myView.getContext(), "Try again!", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
         }
