@@ -143,8 +143,6 @@ public class MainActivity extends AppCompatActivity
         }else if (id == R.id.logout){
             doLogout();
         }else if (id == R.id.nav_third_layout) {
-            //TODO: Logout - delete Token
-            Token.deleteToken(this);
             fragmentManager.beginTransaction().replace(R.id.content_frame, new ThirdFragment()).commit();
         }
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
