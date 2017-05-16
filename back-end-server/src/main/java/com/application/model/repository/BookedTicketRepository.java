@@ -1,5 +1,6 @@
 package com.application.model.repository;
 
+import java.awt.print.Book;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,15 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.application.model.BookedTickets;
 import com.application.model.Spectacle;
+import com.application.model.SpectacleSchedule;
 
 @Transactional
 public interface BookedTicketRepository extends JpaRepository<BookedTickets, Long> {
 
-	@Query("select s.spectacle from BookedTickets b inner join b.spectacleScheduler s where b.userField.id= :id")
-	List<Spectacle> findAllUserSpectaclesByUserId(@Param("id") Long id);
+	@Query("select s.spectacle.name,s.spectacleDate,s.price from BookedTickets b inner join b.spectacleScheduler s where b.userField.id= :id")
+	List<BookedTickets> findAllUserSpectaclesByUserId(@Param("id") Long id);
 	
-	@Query("SELECT b from BookedTickets b WHERE b.seatNumber=:seatNumber AND b.spectacleScheduler.idSpectacleSchedule=:idSchedule")
-	List<BookedTickets> findBySeatNumberAndScheduleId(@Param("seatNumber") int seatNumber,
-			@Param("idSchedule") Long idSchedule);
-
+	@Query("SELECT b from BookedTickets b WHERE b.seatNumber=:seatNumber AND b.spectacleScheduler=:schedule")
+	BookedTickets findBySeatNumberAndScheduleId(@Param("seatNumber") int seatNumber,
+			@Param("schedule") SpectacleSchedule schedule);
+	
+	@Query("SELECT b FROM BookedTickets b INNER JOIN b.spectacleScheduler s WHERE s.idSpectacleSchedule=:id")
+	List<BookedTickets> findOccupiedSeatsByIdSchedule(@Param("id") Long id);
 }

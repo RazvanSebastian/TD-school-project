@@ -1,5 +1,8 @@
 package com.application.service;
 
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +25,25 @@ public class BoockedTicketService {
 	
 	public void addNewUserTicketByUserIdAndScheduleId(Long userId,Long scheduleId,int seatNumber) throws Exception{
 		User user = this.userRepostiory.findById(userId);
+		if(user==null)
+			throw new Exception("Id user is required!!");
 		SpectacleSchedule schedule= this.spectacleScheduleRepository.findById(scheduleId);
-		if(this.bookedTicketRepository.findBySeatNumberAndScheduleId(seatNumber, scheduleId).isEmpty() && user!=null && schedule!=null){
-			this.bookedTicketRepository.save(new BookedTickets(seatNumber, user, schedule));
-			return;
-		}
-		throw new Exception("Incompatible data!");
-			
+		if(schedule==null)
+			throw new Exception("Id schedule is required!");
+		if(this.bookedTicketRepository.findBySeatNumberAndScheduleId(seatNumber, schedule)!=null)
+			throw new Exception("The seat is occupied!");
+		this.bookedTicketRepository.save(new BookedTickets(seatNumber, user, schedule));
+	}
+	
+	public int[] getAllEmptySeatsByIdSchedule(Long idSchedule) throws Exception{
+		List<BookedTickets> listOfOccupiedSeats=this.bookedTicketRepository.findOccupiedSeatsByIdSchedule(idSchedule);	
+		if(listOfOccupiedSeats==null)
+			throw new Exception("Empty list!");
+		
+		int numberOfSeats=listOfOccupiedSeats.get(0).getSpectacleScheduler().getSeatsNumber();
+		int[] emptySeats=new int[numberOfSeats+1];	
+		for(BookedTickets b:listOfOccupiedSeats)
+			emptySeats[b.getSeatNumber()]=1;
+		return emptySeats;
 	}
 }

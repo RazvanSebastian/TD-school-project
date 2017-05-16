@@ -29,12 +29,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
 		.antMatchers("/").permitAll()
-		.antMatchers(HttpMethod.POST, "/login").permitAll()
+		.antMatchers(HttpMethod.POST, "/api/register").permitAll()
+		.antMatchers(HttpMethod.POST, "/api/login").permitAll()
 		//all other routes require authentication
 		.anyRequest().authenticated()
 		.and()
 		//Filter api/login requests
-		.addFilterBefore(new JWTLoginFilter("/login", authenticationManager(),userDetailsService),UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(new JWTLoginFilter("/api/login", authenticationManager(),userDetailsService),UsernamePasswordAuthenticationFilter.class)
 		//Filter other requests to check if the JWT is in header
 		.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}

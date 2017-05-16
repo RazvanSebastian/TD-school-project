@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.application.model.BookedTickets;
 import com.application.model.Spectacle;
 import com.application.model.SpectacleSchedule;
 import com.application.model.repository.BookedTicketRepository;
@@ -24,11 +25,11 @@ public class SpectacleService {
 		return spectacleRepository.countSpectacles()!=0?spectacleRepository.findAll():new ArrayList<Spectacle>();
 	}
 	
-	public List<Spectacle> getAllUserSpectacles(Long id){
-		List<Spectacle> userSpectacle=this.bookedTicketRepository.findAllUserSpectaclesByUserId(id);
+	public List<BookedTickets> getAllUserSpectacles(Long id){
+		List<BookedTickets> userSpectacle=this.bookedTicketRepository.findAllUserSpectaclesByUserId(id);
 		if(userSpectacle!=null)
 			return userSpectacle;
-		return new ArrayList<Spectacle>();
+		return new ArrayList<BookedTickets>();
 	}
 	
 	
