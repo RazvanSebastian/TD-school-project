@@ -14,6 +14,9 @@ import com.application.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 	
+	@Query("SELECT COUNT(*) FROM User")
+	long count();
+	
 	@Query("SELECT user FROM User user WHERE user.id=:id")
 	User findById(@Param("id") Long id);
 	

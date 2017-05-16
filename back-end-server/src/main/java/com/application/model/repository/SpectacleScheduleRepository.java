@@ -13,6 +13,9 @@ import com.application.model.SpectacleSchedule;
 @Transactional
 public interface SpectacleScheduleRepository extends JpaRepository<SpectacleSchedule, Long> {
 
+	@Query("SELECT COUNT(*) FROM SpectacleSchedule")
+	long count();
+	
 	// For auto populate
 	@Query("SELECT spectacleSchedule FROM SpectacleSchedule spectacleSchedule WHERE spectacleSchedule.idSpectacleSchedule=:id")
 	SpectacleSchedule findById(@Param("id") Long id);

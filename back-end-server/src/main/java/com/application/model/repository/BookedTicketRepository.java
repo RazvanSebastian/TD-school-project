@@ -14,6 +14,9 @@ import com.application.model.SpectacleSchedule;
 
 @Transactional
 public interface BookedTicketRepository extends JpaRepository<BookedTickets, Long> {
+	
+	@Query("SELECT COUNT(*) FROM BookedTickets")
+	long count();
 
 	@Query("select s.spectacle.name,s.spectacleDate,s.price from BookedTickets b inner join b.spectacleScheduler s where b.userField.id= :id")
 	List<BookedTickets> findAllUserSpectaclesByUserId(@Param("id") Long id);
