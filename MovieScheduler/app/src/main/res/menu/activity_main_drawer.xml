@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
+        <group android:id="@+id/group">
         <item
             android:id="@+id/nav_first_layout"
             android:icon="@drawable/ic_menu_camera"
@@ -10,6 +10,12 @@
             android:visible="true"
             android:actionViewClass="android.support.v7.widget.SearchView"
             />
+        <item
+                android:id="@+id/register_layout"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="Register"
+                />
+        </group>
         <item
             android:id="@+id/nav_second_layout"
             android:icon="@drawable/ic_menu_gallery"

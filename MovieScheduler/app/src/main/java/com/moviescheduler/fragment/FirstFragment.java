@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -47,6 +48,7 @@ public class FirstFragment extends Fragment {
         this.buttonLogin = (Button) myView.findViewById(R.id.buttonLogin);
         this.emailText = (EditText) myView.findViewById(R.id.editTextEmail);
         this.passwordText = (EditText) myView.findViewById(R.id.editTextPassword);
+
         //call the method
         this.onClickLogin();
         return myView;
@@ -70,7 +72,7 @@ public class FirstFragment extends Fragment {
 
         if (emailText.getText().length()!=0&& emailText.getText().length()!=0) {
 
-            String url = "https://back-end-school-project.herokuapp.com/login";
+            String url = "https://back-end-school-project.herokuapp.com/api/login";
 
             AsyncHttpClient client = new AsyncHttpClient();
 
