@@ -96,8 +96,8 @@ public class FirstFragment extends Fragment {
                             userDetailsJson=h.getValue();
                     }
                     if(authToken!=null && userDetailsJson!=null){
-                        tokenHandler.saveToken(authToken,myView.getContext());
-                        tokenHandler.saveDetails(userDetailsJson,myView.getContext());
+                        Token.saveToken(authToken,myView.getContext());
+                        Token.saveDetails(userDetailsJson,myView.getContext());
 
                         Toast.makeText(myView.getContext(), "Login success!", Toast.LENGTH_LONG).show();
 

@@ -55,6 +55,22 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        checkLogin(navigationView);
+    }
+    public void checkLogin(NavigationView navigationView){
+        boolean hasToken=Token.hasToaken(getApplicationContext());
+        if(hasToken) {
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.nav_first_layout).setVisible(false);
+            menu.findItem(R.id.nav_third_layout).setVisible(true);
+            menu.findItem(R.id.logout).setVisible(true);
+        }
+    }
+    public void doLogout(){
+        Token.deleteToken(this);
+        this.recreate();
     }
 
     public void startLoginActivity() {
@@ -125,9 +141,9 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
         } else if (id == R.id.nav_second_layout) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
-        } else if (id == R.id.nav_third_layout) {
-            //TODO: Logout - delete Token
-            Token.deleteToken(this);
+        }else if (id == R.id.logout){
+            doLogout();
+        }else if (id == R.id.nav_third_layout) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new ThirdFragment()).commit();
         }else
             if(id==R.id.register_layout){
