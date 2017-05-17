@@ -51,6 +51,7 @@ public class SpectacleSchedule implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name="spectacle")
+	@JsonIgnore
 	private Spectacle spectacle ;
 	
 	@OneToMany(mappedBy="spectacleScheduler", fetch = FetchType.LAZY,cascade=CascadeType.ALL)

@@ -1,6 +1,7 @@
 package com.application.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,20 @@ public class BoockedTicketService {
 			throw new Exception("Empty list!");
 		
 		int numberOfSeats=listOfOccupiedSeats.get(0).getSpectacleScheduler().getSeatsNumber();
-		int[] emptySeats=new int[numberOfSeats+1];	
-		for(BookedTickets b:listOfOccupiedSeats)
-			emptySeats[b.getSeatNumber()]=1;
-		return emptySeats;
+		int[] allSeats=new int[numberOfSeats+1];	
+		int occupied=0;
+		for(BookedTickets b:listOfOccupiedSeats){
+			allSeats[b.getSeatNumber()]=1;
+			occupied++;
+		}
+		int[] listEMptySeats=new int[allSeats.length-occupied-1];
+		int nr=-1;
+		for(int i=1;i<allSeats.length;i++){
+			if(allSeats[i]==0){
+				nr++;
+				listEMptySeats[nr]=i;
+			}
+		}
+		return listEMptySeats;
 	}
 }
