@@ -2,10 +2,25 @@ package com.moviescheduler.activity;
 
 
 
+import java.util.Calendar;
+import java.util.Date;
+
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.view.View;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,14 +28,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.*;
+import android.view.View;
 
-import com.moviescheduler.fragment.FirstFragment;
 import com.moviescheduler.R;
+import com.moviescheduler.fragment.FirstFragment;
 import com.moviescheduler.fragment.RegisterFragment;
 import com.moviescheduler.fragment.SecondFragment;
 import com.moviescheduler.fragment.ThirdFragment;
+
+
+import com.moviescheduler.service.OnetimeAlarmReceiver;
 import com.moviescheduler.service.Token;
+
+/**
+ * http://stacktips.com/tutorials/android/repeat-alarm-example-in-android
+ */
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +55,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -56,8 +80,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         checkLogin(navigationView);
+
+        Date date=new Date(System.currentTimeMillis()+4000);
+        Date date1=new Date(System.currentTimeMillis()+6000);
+        setAlarm("Title1","Description1",date);
+        setAlarm("Title2","Description2",date1);
+
     }
     public void checkLogin(NavigationView navigationView){
         boolean hasToken=Token.hasToaken(getApplicationContext());
@@ -148,11 +177,29 @@ public class MainActivity extends AppCompatActivity
         }else
             if(id==R.id.register_layout){
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new RegisterFragment()).commit();
+
+
             }
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             return true;
 
     }
+
+    private static int ID=0;
+
+    private void setAlarm(String spectacleName,String spectacleDetails,Date date){
+        ID++;
+        Intent intent1 = new Intent(MainActivity.this, OnetimeAlarmReceiver.class);
+
+        intent1.putExtra("Name",spectacleName);
+        intent1.putExtra("Date",date.toString());
+        intent1.putExtra("Details",spectacleDetails);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,ID,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) MainActivity.this.getSystemService(MainActivity.this.ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, date.getTime(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
+
 }
 
