@@ -30,7 +30,7 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".activity.NewUserSpectacleActivity"></activity>
+        <activity android:name=".activity.NewUserSpectacleActivity" />
     </application>
 
 </manifest>

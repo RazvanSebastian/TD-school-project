@@ -17,6 +17,7 @@ import android.support.v4.app.*;
 
 import com.moviescheduler.fragment.FirstFragment;
 import com.moviescheduler.R;
+import com.moviescheduler.fragment.RegisterFragment;
 import com.moviescheduler.fragment.SecondFragment;
 import com.moviescheduler.fragment.ThirdFragment;
 import com.moviescheduler.service.Token;
@@ -144,7 +145,10 @@ public class MainActivity extends AppCompatActivity
             doLogout();
         }else if (id == R.id.nav_third_layout) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new ThirdFragment()).commit();
-        }
+        }else
+            if(id==R.id.register_layout){
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new RegisterFragment()).commit();
+            }
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             return true;

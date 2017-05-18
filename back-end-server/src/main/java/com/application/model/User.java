@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 
 @Entity
-@Table(name = "user_table")
+@Table(name = "user_entity")
 public class User implements UserDetails {
 
 	/**

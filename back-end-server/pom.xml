@@ -50,15 +50,18 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-		-->
-		<!-- s-->
+        </dependency> 
+        -->
+		
+		<!-- On deploy -->
 		<dependency>
     		<groupId>org.postgresql</groupId>
     		<artifactId>postgresql</artifactId>
     		<version>9.4.1212</version>
 		</dependency> 
 			
+			
+		<!-- Security -->
 		<dependency>
     		<groupId>org.springframework.boot</groupId>
     		<artifactId>spring-boot-starter-security</artifactId>
@@ -70,6 +73,12 @@
     		<version>0.7.0</version>
 		</dependency>
 		
+		<!-- Email validation -->
+		<dependency>
+    		<groupId>commons-validator</groupId>
+    		<artifactId>commons-validator</artifactId>
+    		<version>1.4.1</version>
+		</dependency>
 		
 	</dependencies>
 

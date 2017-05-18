@@ -10,4 +10,19 @@
         android:layout_marginStart="148dp"
         android:text="Third layout" />
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:spinnerMode="dialog"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="53dp"
+        android:text="Button" />
+
 </RelativeLayout>
