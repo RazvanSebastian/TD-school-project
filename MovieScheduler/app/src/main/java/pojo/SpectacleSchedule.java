@@ -8,10 +8,10 @@ import java.util.Date;
 
 public class SpectacleSchedule {
     private Long idSpectacleSchedule;
-    private Date spectacleDate;
-    private Integer seatsNumber;
-    private Integer price;
-    private Spectacle spectacle ;
+    private String spectacleDate;
+    private int seatsNumber;
+    private int price;
+
     public Long getIdSpectacleSchedule() {
         return idSpectacleSchedule;
     }
@@ -20,15 +20,15 @@ public class SpectacleSchedule {
         this.idSpectacleSchedule = idSpectacleSchedule;
     }
 
-    public Date getSpectacleDate() {
+    public String getSpectacleDate() {
         return spectacleDate;
     }
 
-    public void setSpectacleDate(Date spectacleDate) {
+    public void setSpectacleDate(String spectacleDate) {
         this.spectacleDate = spectacleDate;
     }
 
-    public Integer getSeatsNumber() {
+    public int getSeatsNumber() {
         return seatsNumber;
     }
 
@@ -36,7 +36,7 @@ public class SpectacleSchedule {
         this.seatsNumber = seatsNumber;
     }
 
-    public Integer getPrice() {
+    public int getPrice() {
         return price;
     }
 
@@ -44,16 +44,8 @@ public class SpectacleSchedule {
         this.price = price;
     }
 
-    public Spectacle getSpectacle() {
-        return spectacle;
-    }
-
-    public void setSpectacle(Spectacle spectacle) {
-        this.spectacle = spectacle;
-    }
-
 
     public String toString() {
-        return idSpectacleSchedule+", "+spectacleDate+", "+ seatsNumber+", "+price+", "+spectacle.toString();
+        return idSpectacleSchedule+", "+spectacleDate+", "+ seatsNumber+", "+price;
     }
 }

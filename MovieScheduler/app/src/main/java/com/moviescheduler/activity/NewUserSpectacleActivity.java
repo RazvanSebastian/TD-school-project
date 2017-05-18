@@ -33,7 +33,8 @@ public class NewUserSpectacleActivity extends AppCompatActivity {
     Long idSpectacle;
     String spectacleDescription;
     Spinner dateSpinner;
-    ArrayAdapter<Date> listAdapter;
+
+    ArrayAdapter<String> listAdapter;
     private static final String TOKEN_NAME = "Authorization";
     private static final String TOKEN_VALUE = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyenZzOTVAZ21haWwuY29tIiwiZXhwIjoxNDk2MDUxOTE2fQ.HZ4eVINa6Ng4cQPTp2HgttpRKnaZ2D9n4tndAkXd-VSZGvzr2BNiboM1FNMBtW8zc-Gw0InminMT9D1TmABLlw";
 
@@ -51,30 +52,40 @@ public class NewUserSpectacleActivity extends AppCompatActivity {
          */
         idSpectacle=getIntent().getLongExtra("SpectacleId",0);
        spectacleDescription=getIntent().getStringExtra("SpectacleDescription");
-        dateSpinner=(Spinner) findViewById(R.id.spinner);
+
         onGetSpectacleSchedule(idSpectacle);
-        dateSpinner=(Spinner) findViewById(R.id.spinner);
 
     }
     void initSpinner(List<SpectacleSchedule> spectacleSchedules){
-        List<Date> list=new ArrayList<Date>();
+        List<String> list=new ArrayList<String>();
         if(spectacleSchedules.isEmpty()){
-            list.add(new Date());
+            list.add("-No show schduled-");
+
         }
         else {
             for (SpectacleSchedule spectacle : spectacleSchedules) {
-                list.add(spectacle.getSpectacleDate());
+                list.add(getDateAsString(spectacle));
             }
         }
 
 
-        dateSpinner=(Spinner) findViewById(R.id.spinner);
+        dateSpinner=(Spinner) findViewById(R.id.dateSpinner);
         listAdapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,list);
         listAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dateSpinner.setAdapter(listAdapter);
 
-    }
 
+
+        //TODO:DateSpinner onItemSelected -> start the fragment
+
+
+    }
+    String getDateAsString(SpectacleSchedule spectacleSchedule){
+        Long l=Long.parseLong(spectacleSchedule.getSpectacleDate());
+        Date date=new Date(l);
+        return date.toString();
+
+    }
     void onGetSpectacleSchedule(long id) {
 
         RequestQueue que = Volley.newRequestQueue(getApplicationContext());
@@ -89,7 +100,7 @@ public class NewUserSpectacleActivity extends AppCompatActivity {
                     }.getType();
                 /**
                 @NOTE 1 - i get an NullPointerException at listType
-                 @NOTE 2 - Problem with json parsing
+                 @NOTE 2 - Problem with json parsing Date SOLVED!
 
                   */
                     List<SpectacleSchedule> spectaclesReceives = new Gson().fromJson(response, listType);
