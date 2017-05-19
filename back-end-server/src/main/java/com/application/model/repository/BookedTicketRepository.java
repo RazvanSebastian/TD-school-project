@@ -1,6 +1,7 @@
 package com.application.model.repository;
 
 import java.awt.print.Book;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.application.model.BookedTickets;
 import com.application.model.Spectacle;
 import com.application.model.SpectacleSchedule;
+import com.application.model.User;
 
 @Transactional
 public interface BookedTicketRepository extends JpaRepository<BookedTickets, Long> {
@@ -27,4 +29,9 @@ public interface BookedTicketRepository extends JpaRepository<BookedTickets, Lon
 	
 	@Query("SELECT b FROM BookedTickets b INNER JOIN b.spectacleScheduler s WHERE s.idSpectacleSchedule=:id")
 	List<BookedTickets> findOccupiedSeatsByIdSchedule(@Param("id") Long id);
+	
+	@Query("SELECT ticket FROM BookedTickets ticket "
+			+ "INNER JOIN ticket.spectacleScheduler sch WHERE sch.spectacleDate BETWEEN :startDay and :endDay "
+			+ "AND ticket.userField=:user")
+	List<BookedTickets> findUserTicketByDateToday(@Param("user") User user,@Param("startDay") Date startDayAsLong,@Param("endDay") Date endDayAsLong);
 }

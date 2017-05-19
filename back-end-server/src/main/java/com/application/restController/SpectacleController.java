@@ -1,5 +1,6 @@
 package com.application.restController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.application.model.BookedTickets;
 import com.application.model.Spectacle;
 import com.application.model.SpectacleSchedule;
+import com.application.model.TicketScheduleSpectacleDao;
 import com.application.model.repository.BookedTicketRepository;
 import com.application.service.BoockedTicketService;
 import com.application.service.SpectacleScheduleService;
@@ -69,6 +71,15 @@ public class SpectacleController {
 			return this.bookedTicketService.getAllEmptySeatsByIdSchedule(id);
 		} catch (Exception e) {
 			return new int[0];		
+		}
+	}
+	
+	@RequestMapping(value="/api/get-spectacles/today/user={id}",method=RequestMethod.GET)
+	public List<TicketScheduleSpectacleDao> test(@PathVariable("id") Long id){
+		try {
+			return this.bookedTicketService.getUserSpectacleToday(id);
+		} catch (Exception e) {
+			return new ArrayList<>();
 		}
 	}
 }

@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.application.model.SpectacleSchedule;
+import com.application.model.User;
 import com.application.model.repository.SpectacleScheduleRepository;
+import com.application.model.repository.UserRepository;
 
 @Service
 public class SpectacleScheduleService {
@@ -15,10 +17,13 @@ public class SpectacleScheduleService {
 	@Autowired
 	private SpectacleScheduleRepository spectacleScheduleRepository;
 
+	
 	public List<SpectacleSchedule> getAllSpectacleScheduleBySpectacleId(Long id){
 		List<SpectacleSchedule> scheduler=this.spectacleScheduleRepository.findAllSpectacleSchedulerBySpectacleId(id);
 		if(scheduler!=null)
 			return scheduler;
 		return new ArrayList<SpectacleSchedule>();
 	}
+	
+	
 }

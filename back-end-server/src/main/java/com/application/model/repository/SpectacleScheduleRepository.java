@@ -23,4 +23,6 @@ public interface SpectacleScheduleRepository extends JpaRepository<SpectacleSche
 
 	@Query("SELECT s FROM SpectacleSchedule s WHERE s.spectacle.idSpectacle=:id)")
 	List<SpectacleSchedule> findAllSpectacleSchedulerBySpectacleId(@Param("id") Long id);
+
+	
 }

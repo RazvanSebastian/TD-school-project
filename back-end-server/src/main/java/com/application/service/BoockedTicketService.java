@@ -1,7 +1,10 @@
 package com.application.service;
 
 
+import java.awt.print.Book;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.application.model.BookedTickets;
 import com.application.model.SpectacleSchedule;
+import com.application.model.TicketScheduleSpectacleDao;
 import com.application.model.User;
 import com.application.model.repository.BookedTicketRepository;
 import com.application.model.repository.SpectacleScheduleRepository;
@@ -23,6 +27,7 @@ public class BoockedTicketService {
 	private SpectacleScheduleRepository spectacleScheduleRepository;
 	@Autowired
 	private BookedTicketRepository bookedTicketRepository;
+	
 	
 	public void addNewUserTicketByUserIdAndScheduleId(Long userId,Long scheduleId,int seatNumber) throws Exception{
 		User user = this.userRepostiory.findById(userId);
@@ -57,5 +62,44 @@ public class BoockedTicketService {
 			}
 		}
 		return listEMptySeats;
+	}
+	
+	
+	public List<TicketScheduleSpectacleDao> getUserSpectacleToday(Long idUser) throws Exception{
+		final User user =this.userRepostiory.findById(idUser);
+		if(user==null)
+			throw new Exception("User not found!");
+		Calendar calendar=Calendar.getInstance();
+		Date date=new Date();
+		
+		calendar.setTime(date);
+		
+		calendar.set(Calendar.AM_PM, Calendar.AM);
+		calendar.set(Calendar.HOUR_OF_DAY,10);
+		calendar.set(Calendar.MINUTE,0);
+		calendar.set(Calendar.SECOND,0);
+		Date startDay=new Date(calendar.getTimeInMillis());
+		
+		calendar.set(Calendar.AM_PM, Calendar.PM);
+		calendar.set(Calendar.HOUR_OF_DAY,22);
+		calendar.set(Calendar.MINUTE,0);
+		calendar.set(Calendar.SECOND,0);
+		Date endDay=new Date(calendar.getTimeInMillis());
+		
+		List<BookedTickets> userTicketToday=this.bookedTicketRepository.findUserTicketByDateToday(user, startDay, endDay);
+		if(userTicketToday==null)
+			return new ArrayList<>();
+		
+		List<TicketScheduleSpectacleDao> listToSend= new ArrayList<>();
+		for(BookedTickets b:userTicketToday){
+			listToSend.add(new TicketScheduleSpectacleDao(
+					b.getIdTransaction(),
+					b.getSpectacleScheduler().getPrice(), 
+					b.getSpectacleScheduler().getSpectacleDate().getTime(), 
+					b.getSpectacleScheduler().getSpectacle().getName(), 
+					b.getSpectacleScheduler().getSpectacle().getDescription(), 
+					b.getSeatNumber()));
+		}
+		return listToSend;
 	}
 }
