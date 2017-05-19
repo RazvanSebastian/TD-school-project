@@ -19,40 +19,8 @@ import pojo.Spectacle;
 
 public class PopUp {
 
-    public void openNewPopOnSelectSpectacle(final FragmentActivity fa,final Context context, String title, String message, final Spectacle spectacleToPass) {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                context);
-        final Intent intent = new Intent(fa,NewUserSpectacleActivity.class);
-        // set title
-        alertDialogBuilder.setTitle(title);
+    private Intent intent;
+    private Spectacle spectacle;
 
 
-
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        intent.putExtra("SpectacleDescription",spectacleToPass.toString());
-                        intent.putExtra("SpectacleId",spectacleToPass.getIdSpectacle());
-                        fa.startActivity(intent);
-                    }
-                })
-                .setNegativeButton("No",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        // if this button is clicked, just close
-                        // the dialog box and do nothing
-                        dialog.cancel();
-                    }
-                });
-
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
-
-    }
 }

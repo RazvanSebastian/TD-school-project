@@ -18,19 +18,16 @@ import com.moviescheduler.activity.SpectacleNotified;
 
 public class OnetimeAlarmReceiver extends BroadcastReceiver {
 
-    private static int ID=0;
-
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        ID++;
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent notificationIntent= new Intent(context,SpectacleNotified.class);
 
         notificationIntent.putExtra("Details",intent.getStringExtra("Details"));
 
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(context, ID,
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(context, intent.getIntExtra("ID",0),
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder.setSmallIcon(R.drawable.ic_stat_name);
@@ -44,7 +41,7 @@ public class OnetimeAlarmReceiver extends BroadcastReceiver {
         mBuilder.setContentIntent(resultPendingIntent);
 
         // notificationID allows you to update the notification later on.
-        mNotificationManager.notify(ID, mBuilder.build());
+        mNotificationManager.notify(intent.getIntExtra("ID",0), mBuilder.build());
 
     }
 

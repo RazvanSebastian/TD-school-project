@@ -1,5 +1,6 @@
 package com.moviescheduler.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,13 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestHandle;
 import com.moviescheduler.R;
+import com.moviescheduler.service.InternetConnection;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,8 +24,7 @@ import java.io.UnsupportedEncodingException;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
-import pojo.User;
-
+import android.support.v4.app.*;
 /**
  * Created by Parautiu on 11.05.2017.
  */
@@ -36,6 +35,7 @@ public class RegisterFragment extends Fragment{
     EditText emailRegister;
     EditText passwordRegister;
     Button signInButton;
+    Context context;
 
     @Nullable
     @Override
@@ -44,7 +44,7 @@ public class RegisterFragment extends Fragment{
         emailRegister=(EditText)myView.findViewById(R.id.editEmailRegister);
         passwordRegister=(EditText)myView.findViewById(R.id.editPasswordRegister);
         signInButton=(Button)myView.findViewById(R.id.registerButton);
-
+        context=getContext();
         onClickRegister();
 
         return myView;
@@ -67,9 +67,18 @@ public class RegisterFragment extends Fragment{
         });
     }
 
+
     private void onHttpPostRegistration() throws JSONException, UnsupportedEncodingException {
 
+
+
         if (emailRegister.getText().length() != 0 && passwordRegister.getText().length() != 0) {
+
+            if(InternetConnection.isInternetAvailable(getContext())==false){
+                Toast.makeText(myView.getContext(), "No internet connection!", Toast.LENGTH_LONG).show();
+                return;
+            }
+
             String url = "https://back-end-school-project.herokuapp.com/api/register";
 
             AsyncHttpClient client = new AsyncHttpClient();
@@ -85,6 +94,14 @@ public class RegisterFragment extends Fragment{
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     Toast.makeText(myView.getContext(), "Success registration!", Toast.LENGTH_LONG).show();
+                    try {
+                        FragmentManager fm = getFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        FirstFragment loginFragment = new FirstFragment();
+                        ft.replace(R.id.content_frame, loginFragment);
+                        ft.commit();
+
+                    }catch (Exception e){Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();}
                 }
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
@@ -94,6 +111,7 @@ public class RegisterFragment extends Fragment{
 
                 }
             });
+
         }
     }
 }

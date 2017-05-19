@@ -2,8 +2,13 @@ package com.moviescheduler.activity;
 
 
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -29,7 +34,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.moviescheduler.R;
 import com.moviescheduler.fragment.FirstFragment;
 import com.moviescheduler.fragment.RegisterFragment;
@@ -40,6 +57,13 @@ import com.moviescheduler.fragment.ThirdFragment;
 import com.moviescheduler.service.OnetimeAlarmReceiver;
 import com.moviescheduler.service.Token;
 
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import pojo.Spectacle;
+import pojo.TicketScheduleSpectacle;
+
 /**
  * http://stacktips.com/tutorials/android/repeat-alarm-example-in-android
  */
@@ -48,6 +72,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Menu mMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +107,12 @@ public class MainActivity extends AppCompatActivity
 
         checkLogin(navigationView);
 
-        Date date=new Date(System.currentTimeMillis()+4000);
-        Date date1=new Date(System.currentTimeMillis()+6000);
-        setAlarm("Title1","Description1",date);
-        setAlarm("Title2","Description2",date1);
+//        Date date=new Date(System.currentTimeMillis()+4000);
+//        Date date1=new Date(System.currentTimeMillis()+6000);
+//        setAlarm("Title1","Description1",date);
+//        setAlarm("Title2","Description2",date1);
+
+        //getAllTodaySpectacles();
 
     }
     public void checkLogin(NavigationView navigationView){
@@ -186,20 +213,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private static int ID=0;
 
-    private void setAlarm(String spectacleName,String spectacleDetails,Date date){
-        ID++;
-        Intent intent1 = new Intent(MainActivity.this, OnetimeAlarmReceiver.class);
-
-        intent1.putExtra("Name",spectacleName);
-        intent1.putExtra("Date",date.toString());
-        intent1.putExtra("Details",spectacleDetails);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,ID,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) MainActivity.this.getSystemService(MainActivity.this.ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, date.getTime(), AlarmManager.INTERVAL_DAY, pendingIntent);
-    }
 
 }
 

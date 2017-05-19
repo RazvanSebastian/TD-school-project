@@ -1,7 +1,9 @@
 package com.moviescheduler.fragment;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +41,8 @@ import java.util.Map;
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
 import com.moviescheduler.R;
+import com.moviescheduler.activity.NewUserSpectacleActivity;
+import com.moviescheduler.service.InternetConnection;
 
 import pojo.Spectacle;
 import popup.PopUp;
@@ -52,6 +57,8 @@ public class SecondFragment extends Fragment{
     ListView spectacleListView;
     ArrayAdapter<Spectacle> listAdapter;
 
+    Context context;
+
     private static final String TOKEN_NAME = "Authorization";
     private static final String TOKEN_VALUE = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyenZzOTVAZ21haWwuY29tIiwiZXhwIjoxNDk2MDUxOTE2fQ.HZ4eVINa6Ng4cQPTp2HgttpRKnaZ2D9n4tndAkXd-VSZGvzr2BNiboM1FNMBtW8zc-Gw0InminMT9D1TmABLlw";
 
@@ -60,7 +67,7 @@ public class SecondFragment extends Fragment{
         myView = inflater.inflate(R.layout.second_layout, container, false);
 
         onGetSpectacle();
-
+        context=getContext();
         /**
          * @NOTE: Must instantiate again... Don't know why...
          */
@@ -71,7 +78,7 @@ public class SecondFragment extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                new PopUp().openNewPopOnSelectSpectacle(getActivity(),getContext(), "Add new spectacle", "Would you like to select a schedule for this spectacle?", listAdapter.getItem(position));
+               openNewPopOnSelectSpectacle("Add new spectacle", "Would you like to select a schedule for this spectacle?", listAdapter.getItem(position));
             }
         });
 
@@ -85,6 +92,11 @@ public class SecondFragment extends Fragment{
     }
 
     void onGetSpectacle() {
+
+        if(InternetConnection.isInternetAvailable(getContext())==false){
+            Toast.makeText(myView.getContext(), "No internet connection!", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         RequestQueue que = Volley.newRequestQueue(getActivity().getApplicationContext());
         String url = "https://back-end-school-project.herokuapp.com/api/get-all-spectacles";
@@ -112,6 +124,44 @@ public class SecondFragment extends Fragment{
             }
         };
         que.add(stringRequest);
+    }
+
+
+    public void openNewPopOnSelectSpectacle(String title, String message, final Spectacle spectacleToPass) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+        // set title
+        alertDialogBuilder.setTitle(title);
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        Intent intent = new Intent(getActivity().getApplicationContext(),NewUserSpectacleActivity.class);
+                       intent.putExtra("SpectacleDescription",spectacleToPass.toString());
+                        intent.putExtra("SpectacleId",spectacleToPass.getIdSpectacle());
+                        try {
+                            context.startActivity(intent);
+                        }catch (Exception e){Toast.makeText(context,e.getMessage()+"",Toast.LENGTH_LONG).show();}
+                    }
+                })
+                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
     }
 }
 

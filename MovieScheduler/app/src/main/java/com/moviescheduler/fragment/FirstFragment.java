@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.moviescheduler.R;
+import com.moviescheduler.service.InternetConnection;
 import com.moviescheduler.service.Token;
 import com.moviescheduler.activity.MainActivity;
 
@@ -72,6 +73,11 @@ public class FirstFragment extends Fragment {
 
         if (emailText.getText().length()!=0&& emailText.getText().length()!=0) {
 
+            if(InternetConnection.isInternetAvailable(getContext())==false){
+                Toast.makeText(myView.getContext(), "No internet connection!", Toast.LENGTH_LONG).show();
+                return;
+            }
+
             String url = "https://back-end-school-project.herokuapp.com/api/login";
 
             AsyncHttpClient client = new AsyncHttpClient();
@@ -110,13 +116,13 @@ public class FirstFragment extends Fragment {
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     switch (statusCode) {
                         case 500:
-                            Toast.makeText(myView.getContext(), "No internet connection!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(myView.getContext(), "Try again later!", Toast.LENGTH_LONG).show();
                             break;
                         case 403:
                             Toast.makeText(myView.getContext(), "Access denied!", Toast.LENGTH_LONG).show();
                             break;
                         default:
-                            Toast.makeText(myView.getContext(), "Try again!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(myView.getContext(), statusCode, Toast.LENGTH_LONG).show();
                     }
                 }
             });

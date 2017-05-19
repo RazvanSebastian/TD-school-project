@@ -23,9 +23,11 @@ public class NewUserSpectacleActivity extends AppCompatActivity {
          Using a list view (check fragment 2) add to list every schedule to be able to select a schedule and also an empty seat... I will create a request to receive every empty seat for the schedule selected!
 
          */
-        idSpectacle=getIntent().getLongExtra("SpectacleId",0);
-       spectacleDescription=getIntent().getStringExtra("SpectacleDescription");
-
+        if(getIntent().hasExtra("SpectacleId") && getIntent().hasExtra("SpectacleDescription")) {
+            idSpectacle = getIntent().getLongExtra("SpectacleId", 0);
+            spectacleDescription = getIntent().getStringExtra("SpectacleDescription");
+            Toast.makeText(getApplicationContext(),idSpectacle+" "+spectacleDescription,Toast.LENGTH_LONG).show();
+        }
 
     }
 }
