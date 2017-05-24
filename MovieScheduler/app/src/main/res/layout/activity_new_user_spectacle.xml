@@ -8,12 +8,10 @@
     android:padding="10dp"
     tools:context="com.moviescheduler.activity.NewUserSpectacleActivity">
 
-
-        android:layout_width="375dp"
-        android:layout_height="567dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
-
+     <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         >
         <RelativeLayout
             android:id="@+id/descriptionLayout"
             android:layout_width="wrap_content"
@@ -96,5 +94,5 @@
                 android:text="Book now"
                 android:textSize="25sp"/>
         </RelativeLayout>
-
+     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
