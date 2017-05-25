@@ -52,42 +52,43 @@ public class AppConfig {
 							.save(new Spectacle("12 OAMENI FURIOȘI", "după Jean-Paul Sartre și William Shakespeare"));
 
 					List<Spectacle> spectacles=this.spectacleRepository.findAll();
-					Long dateReference = (long) (1000 * 60 * 60 * 24);// one day
+					Long dateReference = (long) (1000 * 60 * 60 * 24);// one day 
+
 					spectacleScheduleRepository
-							.save(new SpectacleSchedule(new Date(System.currentTimeMillis()), 60,
+							.save(new SpectacleSchedule(new Date(1495698300000L), 60,
 									10, spectacles.get(0)));
 					spectacleScheduleRepository
-							.save(new SpectacleSchedule(new Date(System.currentTimeMillis()), 50,
+							.save(new SpectacleSchedule(new Date(1495702800000L), 50,
 									12, spectacles.get(1)));
 					spectacleScheduleRepository
-							.save(new SpectacleSchedule(new Date(System.currentTimeMillis() + dateReference * 1), 55,
+							.save(new SpectacleSchedule(new Date(1495616400000L), 55,
 									11,spectacles.get(2) ));
 					spectacleScheduleRepository
-							.save(new SpectacleSchedule(new Date(System.currentTimeMillis() + dateReference * 2), 60,
+							.save(new SpectacleSchedule(new Date(1495609200000L), 60,
 									12, spectacles.get(3)));
 					spectacleScheduleRepository
-							.save(new SpectacleSchedule(new Date(System.currentTimeMillis()), 60,
+							.save(new SpectacleSchedule(new Date(1495724400000L), 60,
 									15, spectacles.get(4)));
 					spectacleScheduleRepository
-							.save(new SpectacleSchedule(new Date(System.currentTimeMillis() + dateReference * 4), 55,
+							.save(new SpectacleSchedule(new Date(1495796400000L), 55,
 									12, spectacles.get(0)));
 					spectacleScheduleRepository
-							.save(new SpectacleSchedule(new Date(System.currentTimeMillis() + dateReference * 5), 60,
+							.save(new SpectacleSchedule(new Date(1495882800000L), 60,
 									11, spectacles.get(1)));
 
 					List<SpectacleSchedule> scheduleList=this.spectacleScheduleRepository.findAll();
 					bookedTicketRepository.save(new BookedTickets(12, this.userRepo.findById((long) 1),
 							scheduleList.get(0)));
-					bookedTicketRepository.save(new BookedTickets(10, this.userRepo.findById((long) 2),
-							scheduleList.get(0)));
+					bookedTicketRepository.save(new BookedTickets(10, this.userRepo.findById((long) 1),
+							scheduleList.get(1)));
 					bookedTicketRepository.save(new BookedTickets(5, this.userRepo.findById((long) 1),
-							scheduleList.get(4)));
-					bookedTicketRepository.save(new BookedTickets(1, this.userRepo.findById((long) 2),
 							scheduleList.get(2)));
-					bookedTicketRepository.save(new BookedTickets(12, this.userRepo.findById((long) 1),
-							scheduleList.get(2)));
-					bookedTicketRepository.save(new BookedTickets(12, this.userRepo.findById((long) 1),
+					bookedTicketRepository.save(new BookedTickets(1, this.userRepo.findById((long) 1),
 							scheduleList.get(3)));
+					bookedTicketRepository.save(new BookedTickets(11, this.userRepo.findById((long) 1),
+							scheduleList.get(4)));
+					bookedTicketRepository.save(new BookedTickets(13, this.userRepo.findById((long) 1),
+							scheduleList.get(5)));
 				}
 			}
 		};
