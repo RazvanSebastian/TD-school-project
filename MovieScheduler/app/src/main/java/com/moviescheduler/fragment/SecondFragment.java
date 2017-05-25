@@ -43,6 +43,7 @@ import com.google.gson.reflect.TypeToken;
 import com.moviescheduler.R;
 import com.moviescheduler.activity.NewUserSpectacleActivity;
 import com.moviescheduler.service.InternetConnection;
+import com.moviescheduler.service.Token;
 
 import pojo.Spectacle;
 import popup.PopUp;
@@ -77,8 +78,11 @@ public class SecondFragment extends Fragment{
         spectacleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                if(Token.hasToaken(getContext()))
                openNewPopOnSelectSpectacle("Add new spectacle", "Would you like to select a schedule for this spectacle?", listAdapter.getItem(position));
+                else{
+                    Toast.makeText(context,"Please Login",Toast.LENGTH_LONG).show();
+                }
             }
         });
 

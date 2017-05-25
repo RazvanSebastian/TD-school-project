@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        findViewById(R.id.background).setVisibility(View.VISIBLE);
 
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity
         if(hasToken) {
             Menu menu = navigationView.getMenu();
             menu.findItem(R.id.nav_first_layout).setVisible(false);
-            menu.findItem(R.id.nav_third_layout).setVisible(true);
+           // menu.findItem(R.id.nav_third_layout).setVisible(true);
             menu.findItem(R.id.logout).setVisible(true);
         }
     }
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        findViewById(R.id.background).setVisibility(View.INVISIBLE);
 
         /**
          * @NOTE: For a new Fragment java class you must import android.support.v4.app.*; instead the basic package!!!

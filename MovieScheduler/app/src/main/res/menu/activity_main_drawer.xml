@@ -40,7 +40,7 @@
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Add to list to watch"
-            android:visible="true"
+            android:visible="false"
            />
 
 

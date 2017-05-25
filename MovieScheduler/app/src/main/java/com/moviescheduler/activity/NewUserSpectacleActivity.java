@@ -1,6 +1,7 @@
 package com.moviescheduler.activity;
 
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -21,8 +22,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.moviescheduler.R;
+import com.moviescheduler.service.Token;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,12 +38,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 import pojo.SpectacleSchedule;
 
 public class NewUserSpectacleActivity extends AppCompatActivity {
 
     Long idSpectacle;
     String spectacleDescription;
+    long selectedIdSchedule;
     Spinner dateSpinner;
     Spinner seatsSpinner;
     Button bookButton;
@@ -76,6 +87,7 @@ public class NewUserSpectacleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                onAddNewUserTicket(seatsSpinner.getSelectedItem().toString());
             }
         });
     }
@@ -102,6 +114,7 @@ public class NewUserSpectacleActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 onGetSpectacleSeats(spectacleSchedules.get(position).getIdSpectacleSchedule());
                 setPrice(spectacleSchedules.get(position).getPrice());
+                selectedIdSchedule=spectacleSchedules.get(position).getIdSpectacleSchedule();
             }
 
             @Override
@@ -218,4 +231,84 @@ public class NewUserSpectacleActivity extends AppCompatActivity {
         priceValue.setText(price+"");
     }
 
+    void onAddNewUserTicket(String seatNumber){
+
+        Toast.makeText(getApplicationContext(),"Ticket Booked",Toast.LENGTH_LONG).show();
+       //TODO: method1 - doesn't work
+       /* RequestQueue que = Volley.newRequestQueue(getApplicationContext());
+        long userId=1;
+ String url = "https://back-end-school-project.herokuapp.com/a/api/new-user-ticket/seatNumber="+seatNumber+"&userId="+userId+"&spectacleSchedule="+selectedIdSchedule+"";
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        JSONObject jsonParams = new JSONObject();
+        try {
+            jsonParams.put(TOKEN_NAME, TOKEN_VALUE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(jsonParams.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        client.post(getApplicationContext(), url, entity, "application/json", new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+
+
+                    Toast.makeText(getApplicationContext(), "Ticket Booked!", Toast.LENGTH_LONG).show();
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                switch (statusCode) {
+                    case 500:
+                        Toast.makeText(getApplicationContext(), "Try again later!", Toast.LENGTH_LONG).show();
+                        break;
+                    case 403:
+                        Toast.makeText(getApplicationContext(), "Access denied!", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        Toast.makeText(getApplicationContext(), statusCode, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        */
+        //TODO:method 2
+       /*
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Toast toast=Toast.makeText(getApplicationContext(),response+"",Toast.LENGTH_LONG);
+                toast.show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast toast = Toast.makeText(getApplicationContext(),error.getStackTrace()+"", Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headerParams = new HashMap<String, String>();
+                // headerParams.put(TOKEN_NAME, Token.getToken(getContext()));
+                headerParams.put(TOKEN_NAME, TOKEN_VALUE);
+                return headerParams;
+            }
+        };
+        que.add(stringRequest);
+*/
+    }
 }
