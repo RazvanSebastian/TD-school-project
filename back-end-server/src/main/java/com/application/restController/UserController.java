@@ -20,18 +20,23 @@ import com.application.service.UserDetailsService;
 
 @RestController
 public class UserController {
-	
+
 	@Autowired
 	private UserDetailsService userService;
-	
-	@RequestMapping(value="/api/register",method=RequestMethod.POST)
-	public ResponseEntity<String> onSendRegister(@RequestBody User newUser){
+
+	@RequestMapping(value = "/api/register", method = RequestMethod.POST)
+	public ResponseEntity<String> onSendRegister(@RequestBody User newUser) {
 		try {
 			this.userService.userRegister(newUser.getUserEmail(), newUser.getPassword());
-			return new ResponseEntity<>("OK",HttpStatus.OK);
+			return new ResponseEntity<>("OK", HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
+	@RequestMapping(value = "/api/admin", method = RequestMethod.GET)
+	public String adminTest() {
+		return "admin";
+	}
+
 }

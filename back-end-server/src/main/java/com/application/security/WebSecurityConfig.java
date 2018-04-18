@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers("/").permitAll()
 		.antMatchers(HttpMethod.POST, "/api/register").permitAll()
 		.antMatchers(HttpMethod.POST, "/api/login").permitAll()
+		.antMatchers(HttpMethod.GET,"/api/admin").hasAnyRole("ADMIN")
 		//all other routes require authentication
 		.anyRequest().authenticated()
 		.and()

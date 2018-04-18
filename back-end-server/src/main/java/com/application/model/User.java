@@ -1,6 +1,8 @@
 package com.application.model;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,12 +12,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -47,10 +50,13 @@ public class User implements UserDetails {
 	@NotNull
 	@Column(name = "password")
 	private String password;
-	
+
 	@JsonIgnore
-	@OneToMany(mappedBy="userField",fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "userField", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BookedTickets> userTickets;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Set<Role> roles;
 
 	public User() {
 		super();
@@ -80,11 +86,22 @@ public class User implements UserDetails {
 		this.userEmail = userEmail;
 	}
 
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
 	@Override
-	@JsonIgnore
+	//@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		Set<SimpleGrantedAuthority> authorities = new HashSet<SimpleGrantedAuthority>();
+		Iterator<Role> iterator = roles.iterator();
+		while (iterator.hasNext())
+			authorities.add(new SimpleGrantedAuthority(iterator.next().getRole()));
+		return authorities;
 	}
 
 	@Override
